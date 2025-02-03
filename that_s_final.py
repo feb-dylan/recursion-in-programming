@@ -159,7 +159,7 @@ def permutations(arr):
 st.title("Recursion Explorer 🌀")
 st.sidebar.header("Select a Mode")
 option = st.sidebar.radio("Choose:", [
-    "Factorial", "Power", "Prime Check", "Guessing Game", 
+    "Explanation Page", "Factorial", "Power", "Prime Check", "Guessing Game", 
     "Tree Fractal", "Recursive Puzzle Challenge", "Fibonacci Visualization", 
     "Merge Sort", "Permutations"
 ])
@@ -179,6 +179,210 @@ if option == "Factorial":
         ax.set_title(f"Factorial Growth for {int(num)}")
         st.pyplot(fig)
         plt.close()  # Close the figure to free memory
+
+
+elif option == "Explanation Page":
+    st.title("📚 Recursion Explorer - Explanation Page")
+    st.write("""
+    Welcome to **Recursion Explorer**! This app demonstrates various recursive algorithms and visualizations. 
+    Below is a detailed explanation of each mode:
+    """)
+    
+    st.markdown("---")
+    
+    # Factorial Explanation
+    st.header("🔢 Factorial")
+    st.write("""
+    The **Factorial** mode calculates the factorial of a number using recursion. 
+    - **Formula**: `n! = n * (n-1)!`
+    - **Example**: `5! = 5 * 4 * 3 * 2 * 1 = 120`
+    """)
+    st.code("""
+    def factorial(n):
+        if n == 0 or n == 1:
+            return 1
+        return n * factorial(n - 1)
+    """, language="python")
+    
+    st.markdown("---")
+    
+    # Power Explanation
+    st.header("⚡ Power")
+    st.write("""
+    The **Power** mode calculates the power of a number using recursion.
+    - **Formula**: `base^exp = base * base^(exp-1)`
+    - **Example**: `2^3 = 2 * 2 * 2 = 8`
+    """)
+    st.code("""
+    def power(base, exp):
+        if exp == 0:
+            return 1
+        return base * power(base, exp - 1)
+    """, language="python")
+    
+    st.markdown("---")
+    
+    # Prime Check Explanation
+    st.header("🔍 Prime Check")
+    st.write("""
+    The **Prime Check** mode determines if a number is prime using recursion.
+    - **Logic**: A number is prime if it has no divisors other than 1 and itself.
+    - **Example**: `7` is prime, but `9` is not.
+    """)
+    st.code("""
+    def is_prime(n, divisor=None):
+        if n < 2:
+            return False
+        if divisor is None:
+            divisor = n - 1
+        if divisor == 1:
+            return True
+        if n % divisor == 0:
+            return False
+        return is_prime(n, divisor - 1)
+    """, language="python")
+    
+    st.markdown("---")
+    
+    # Guessing Game Explanation
+    st.header("🎮 Guessing Game")
+    st.write("""
+    The **Guessing Game** mode lets you guess a random number between 1 and 100.
+    - **Hint**: The app tells you if your guess is too high or too low.
+    - **Example**: If the number is `42`, guessing `50` will return "📉 Too high!"
+    """)
+    st.code("""
+    def guessing_game(number, guess):
+        if guess == number:
+            return "🎉 Correct! You found the number!"
+        elif guess > number:
+            return "📉 Too high! Try again."
+        else:
+            return "📈 Too low! Try again."
+    """, language="python")
+    
+    st.markdown("---")
+    
+    # Tree Fractal Explanation
+    st.header("🌳 Tree Fractal")
+    st.write("""
+    The **Tree Fractal** mode draws a recursive tree fractal.
+    - **Logic**: Each branch splits into two smaller branches.
+    - **Example**: A depth of `5` creates a complex tree structure.
+    """)
+    st.code("""
+    def draw_tree(ax, x, y, angle, depth):
+        if depth == 0:
+            return
+        x2 = x + np.cos(np.radians(angle)) * depth * 5
+        y2 = y + np.sin(np.radians(angle)) * depth * 5
+        ax.plot([x, x2], [y, y2], 'g', linewidth=depth / 2)
+        draw_tree(ax, x2, y2, angle - 20, depth - 1)
+        draw_tree(ax, x2, y2, angle + 20, depth - 1)
+    """, language="python")
+    
+    st.markdown("---")
+    
+    # Recursive Puzzle Explanation
+    st.header("🧩 Recursive Puzzle Challenge")
+    st.write("""
+    The **Recursive Puzzle Challenge** mode solves a recursive puzzle step-by-step.
+    - **Logic**: Each step reduces the problem size until the base case is reached.
+    - **Example**: Solving `n=5` requires solving `n=4`, `n=3`, etc.
+    """)
+    st.code("""
+    def recursive_puzzle(n):
+        if n == 1:
+            return "🎉 Congratulations! You've solved the recursion challenge!"
+        return f"🔄 Solve this recursive step first: {n-1}"
+    """, language="python")
+    
+    st.markdown("---")
+    
+    # Fibonacci Visualization Explanation
+    st.header("🌀 Fibonacci Visualization")
+    st.write("""
+    The **Fibonacci Visualization** mode draws the Fibonacci spiral.
+    - **Logic**: Each term is the sum of the two preceding ones.
+    - **Example**: `[1, 1, 2, 3, 5]` creates a spiral with 5 terms.
+    """)
+    st.code("""
+    def fibonacci(n):
+        if n <= 0:
+            return 0
+        elif n == 1:
+            return 1
+        return fibonacci(n - 1) + fibonacci(n - 2)
+    """, language="python")
+    
+    st.markdown("---")
+    
+    # Merge Sort Explanation
+    st.header("📊 Merge Sort")
+    st.write("""
+    The **Merge Sort** mode sorts an array using the merge sort algorithm.
+    - **Logic**: Divide the array into halves, sort each half, and merge them.
+    - **Example**: `[5, 3, 8, 1]` becomes `[1, 3, 5, 8]`.
+    """)
+    st.code("""
+    def merge_sort(arr):
+        if len(arr) > 1:
+            mid = len(arr) // 2
+            left = arr[:mid]
+            right = arr[mid:]
+            merge_sort(left)
+            merge_sort(right)
+            i = j = k = 0
+            while i < len(left) and j < len(right):
+                if left[i] < right[j]:
+                    arr[k] = left[i]
+                    i += 1
+                else:
+                    arr[k] = right[j]
+                    j += 1
+                k += 1
+            while i < len(left):
+                arr[k] = left[i]
+                i += 1
+                k += 1
+            while j < len(right):
+                arr[k] = right[j]
+                j += 1
+                k += 1
+        return arr
+    """, language="python")
+    
+    st.markdown("---")
+    
+    # Permutations Explanation
+    st.header("🔀 Permutations")
+    st.write("""
+    The **Permutations** mode generates all permutations of a set using recursion.
+    - **Logic**: Swap elements to generate all possible arrangements.
+    - **Example**: `[a, b, c]` has `6` permutations.
+    """)
+    st.code("""
+    def permutations(arr):
+        if len(arr) == 1:
+            return [arr]
+        result = []
+        for i in range(len(arr)):
+            first = [arr[i]]
+            rest = arr[:i] + arr[i+1:]
+            for p in permutations(rest):
+                result.append(first + p)
+        return result
+    """, language="python")
+    
+    st.markdown("---")
+    
+    # Footer
+    st.write("""
+    ### 📚 Further Reading
+    - [Recursion in Python (Real Python)](https://realpython.com/python-recursion/)
+    - [Fibonacci Sequence (Wikipedia)](https://en.wikipedia.org/wiki/Fibonacci_number)
+    - [Merge Sort (GeeksforGeeks)](https://www.geeksforgeeks.org/merge-sort/)
+    """)
 
 elif option == "Power":
     base = st.number_input("Enter base:", step=1)
