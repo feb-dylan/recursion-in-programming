@@ -28,11 +28,10 @@ def is_prime(n, divisor=None):
     return is_prime(n, divisor - 1)
 
 def fibonacci(n):
-    if n <= 0:
-        return 0
-    elif n == 1:
-        return 1
-    return fibonacci(n - 1) + fibonacci(n - 2)
+    a, b = 0, 1
+    for _ in range(n):
+        a, b = b, a + b
+    return a
 
 # Recursive Guessing Game
 def guessing_game(number, guess):
@@ -64,8 +63,7 @@ def fibonacci_sequence(n):
     return [fibonacci(i) for i in range(n)]
 
 def fibonacci_spiral(n):
-    fib_sequence = [fibonacci(i) for i in range(n)]
-    return fib_sequence  
+    return [fibonacci(i) for i in range(1, n+1)]  # Start from term 1, not 0
 
 # Recursive Divide and Conquer (Merge Sort)
 def merge_sort(arr):
@@ -204,25 +202,24 @@ elif option == "Fibonacci Visualization":
         direction = 0  # 0=right, 1=up, 2=left, 3=down
         directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
         
-        # Track coordinates for setting plot limits
+        # Track coordinates for plot limits
         x_coords = [0]
         y_coords = [0]
 
-        # Draw the Fibonacci spiral
+        # Draw the spiral
         for i, term in enumerate(fib_sequence):
             dx, dy = directions[direction % 4]
             
-            # Draw the line
+            # Draw the line segment
             ax.plot([x, x + dx * term], [y, y + dy * term], 
-                    color='blue', linewidth=2, 
-                    label=f'Term {i+1}: {term}')
+                    color='blue', linewidth=2)
             
             # Update coordinates
             x += dx * term
             y += dy * term
             direction += 1
             
-            # Track min/max for plot limits
+            # Track coordinates for limits
             x_coords.append(x)
             y_coords.append(y)
 
@@ -230,10 +227,10 @@ elif option == "Fibonacci Visualization":
         ax.set_xlim(min(x_coords)-1, max(x_coords)+1)
         ax.set_ylim(min(y_coords)-1, max(y_coords)+1)
         
-        # Add legend and annotations
-        ax.legend(loc='upper left')
+        # Display the plot
         st.pyplot(fig)
         plt.close()
+         
 elif option == "Merge Sort":
     arr = st.text_input("Enter numbers separated by commas (e.g., 5, 3, 8, 1):")
     if st.button("Sort"):
