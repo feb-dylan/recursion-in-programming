@@ -196,31 +196,44 @@ elif option == "Fibonacci Visualization":
         fib_sequence = fibonacci_spiral(int(num))
         
         # Initialize the figure
-        fig, ax = plt.subplots()
-        ax.set_xlim(0, sum(fib_sequence) + 5)
-        ax.set_ylim(0, sum(fib_sequence) + 5)
-        ax.set_aspect('equal', 'box')
+        fig, ax = plt.subplots(figsize=(8, 8))
+        ax.set_aspect('equal')
         ax.axis('off')
 
         x, y = 0, 0
         direction = 0  # 0=right, 1=up, 2=left, 3=down
         directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
         
-        # Draw the Fibonacci spiral step-by-step
+        # Track coordinates for setting plot limits
+        x_coords = [0]
+        y_coords = [0]
+
+        # Draw the Fibonacci spiral
         for i, term in enumerate(fib_sequence):
             dx, dy = directions[direction % 4]
-            ax.plot([x, x + dx * term], [y, y + dy * term], color='blue')
+            
+            # Draw the line
+            ax.plot([x, x + dx * term], [y, y + dy * term], 
+                    color='blue', linewidth=2, 
+                    label=f'Term {i+1}: {term}')
+            
+            # Update coordinates
             x += dx * term
             y += dy * term
             direction += 1
             
-            # Display the current step
-            st.write(f"Step {i + 1}: Fibonacci term = {term}")
-            st.pyplot(fig)
-            time.sleep(1)  # Add a delay for step-by-step visualization
+            # Track min/max for plot limits
+            x_coords.append(x)
+            y_coords.append(y)
 
-        plt.close()  # Close the figure to free memory
-
+        # Set dynamic plot limits
+        ax.set_xlim(min(x_coords)-1, max(x_coords)+1)
+        ax.set_ylim(min(y_coords)-1, max(y_coords)+1)
+        
+        # Add legend and annotations
+        ax.legend(loc='upper left')
+        st.pyplot(fig)
+        plt.close()
 elif option == "Merge Sort":
     arr = st.text_input("Enter numbers separated by commas (e.g., 5, 3, 8, 1):")
     if st.button("Sort"):
