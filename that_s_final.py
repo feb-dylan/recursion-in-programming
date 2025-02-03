@@ -195,7 +195,10 @@ elif option == "Fibonacci Visualization":
     if st.button("Generate Fibonacci"):
         fib_sequence = fibonacci_spiral(int(num))
         
+        # Create a placeholder for the plot
         plot_placeholder = st.empty()
+        
+        # Initialize the figure
         fig, ax = plt.subplots()
         ax.set_xlim(0, sum(fib_sequence) + 5)
         ax.set_ylim(0, sum(fib_sequence) + 5)
@@ -203,9 +206,10 @@ elif option == "Fibonacci Visualization":
         ax.axis('off')
 
         x, y = 0, 0
-        direction = 0
+        direction = 0  # 0=right, 1=up, 2=left, 3=down
         directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
         
+        # Draw the Fibonacci spiral incrementally
         for i, term in enumerate(fib_sequence):
             dx, dy = directions[direction % 4]
             ax.plot([x, x + dx * term], [y, y + dy * term], color='blue')
@@ -213,11 +217,11 @@ elif option == "Fibonacci Visualization":
             y += dy * term
             direction += 1
             
-            # Update the plot incrementally
+            # Update the plot in the placeholder
             plot_placeholder.pyplot(fig)
             time.sleep(0.5)  # Add a delay for animation effect
 
-        plt.close()
+        plt.close()  # Close the figure to free memory
 
 elif option == "Merge Sort":
     arr = st.text_input("Enter numbers separated by commas (e.g., 5, 3, 8, 1):")
