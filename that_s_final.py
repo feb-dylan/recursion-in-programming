@@ -3,7 +3,7 @@ import random
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
-import time 
+import time
 
 # Recursive Functions
 def factorial(n):
@@ -68,26 +68,31 @@ def fibonacci_spiral(n):
     return fib_sequence  
 
 # Recursive Divide and Conquer (Merge Sort)
-def merge_sort_animation(arr):
+def merge_sort(arr):
     if len(arr) > 1:
         mid = len(arr) // 2
         left = arr[:mid]
         right = arr[mid:]
         
         # Recursive call for both halves
-        merge_sort_animation(left)
-        merge_sort_animation(right)
+        merge_sort(left)
+        merge_sort(right)
 
         i = j = k = 0
         while i < len(left) and j < len(right):
-            arr[k] = left[i] if left[i] < right[j] else right[j]
+            if left[i] < right[j]:
+                arr[k] = left[i]
+                i += 1
+            else:
+                arr[k] = right[j]
+                j += 1
             k += 1
-            i += 1 if left[i] < right[j] else 0
-            j += 1 if left[i] >= right[j] else 0
+
         while i < len(left):
             arr[k] = left[i]
             i += 1
             k += 1
+
         while j < len(right):
             arr[k] = right[j]
             j += 1
@@ -145,14 +150,14 @@ elif option == "Prime Check":
         else:
             st.error(f"{int(num)} is not a prime number.")
 
-
 elif option == "Guessing Game":
     number = random.randint(1, 100)
     guess = st.number_input("Guess a number (1-100):", min_value=1, max_value=100, step=1)
     if st.button("Check Guess"):
         st.write("⏳ Time to guess!")
+        countdown_placeholder = st.empty()
         for i in range(5, 0, -1):  # Countdown timer
-            st.write(f"Time left: {i} seconds")
+            countdown_placeholder.write(f"Time left: {i} seconds")
             time.sleep(1)
         
         # Check if the guess is close
@@ -219,7 +224,7 @@ elif option == "Merge Sort":
     if st.button("Sort"):
         arr = list(map(int, arr.split(',')))
         st.write("Original Array:", arr)
-        sorted_arr = merge_sort_animation(arr)
+        sorted_arr = merge_sort(arr)
         st.write("Sorted Array:", sorted_arr)
 
 elif option == "Permutations":
