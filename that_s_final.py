@@ -28,11 +28,57 @@ def is_prime(n, divisor=None):
     return is_prime(n, divisor - 1)
 
 def fibonacci(n):
-    a, b = 0, 1
-    for _ in range(n):
+    a, b = 1, 1
+    for _ in range(n-1):
         a, b = b, a + b
     return a
 
+def generate_golden_spiral(n_terms):
+    fib_sequence = [fibonacci(i) for i in range(1, n_terms + 1)]
+    return fib_sequence
+
+
+def plot_golden_spiral(fib_sequence):
+    fig, ax = plt.subplots(figsize=(8, 8))
+    ax.set_aspect('equal')
+    ax.axis('off')
+    
+    x, y = 0, 0
+    direction = 0  # 0=right, 1=up, 2=left, 3=down
+    directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+    
+    # Track coordinates for dynamic plot limits
+    x_coords, y_coords = [0], [0]
+    
+    for i, term in enumerate(fib_sequence):
+        dx, dy = directions[direction % 4]
+        
+        # Draw the square and arc
+        rect = plt.Rectangle((x, y), dx*term, dy*term, 
+                            edgecolor='purple', facecolor='none', linestyle='--', alpha=0.5)
+        ax.add_patch(rect)
+        
+        # Draw the golden spiral arc
+        theta = np.linspace(direction * 90, (direction + 1) * 90, 100)
+        radius = term
+        x_arc = x + radius * np.cos(np.radians(theta))
+        y_arc = y + radius * np.sin(np.radians(theta))
+        ax.plot(x_arc, y_arc, color='gold', linewidth=2)
+        
+        # Update coordinates
+        x += dx * term
+        y += dy * term
+        direction += 1
+        
+        x_coords.extend([x, x + dx * term])
+        y_coords.extend([y, y + dy * term])
+    
+    # Set dynamic plot limits
+    ax.set_xlim(min(x_coords) - 1, max(x_coords) + 1)
+    ax.set_ylim(min(y_coords) - 1, max(y_coords) + 1)
+    
+    return fig
+    
 # Recursive Guessing Game
 def guessing_game(number, guess):
     if guess == number:
@@ -189,47 +235,17 @@ elif option == "Recursive Puzzle Challenge":
         st.info(recursive_puzzle(num))
 
 elif option == "Fibonacci Visualization":
-    num = st.number_input("Enter number of terms:", min_value=1, step=1, value=5)
-    if st.button("Generate Fibonacci"):
-        fib_sequence = fibonacci_spiral(int(num))
-        
-        # Initialize the figure
-        fig, ax = plt.subplots(figsize=(8, 8))
-        ax.set_aspect('equal')
-        ax.axis('off')
-
-        x, y = 0, 0
-        direction = 0  # 0=right, 1=up, 2=left, 3=down
-        directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
-        
-        # Track coordinates for plot limits
-        x_coords = [0]
-        y_coords = [0]
-
-        # Draw the spiral
-        for i, term in enumerate(fib_sequence):
-            dx, dy = directions[direction % 4]
-            
-            # Draw the line segment
-            ax.plot([x, x + dx * term], [y, y + dy * term], 
-                    color='blue', linewidth=2)
-            
-            # Update coordinates
-            x += dx * term
-            y += dy * term
-            direction += 1
-            
-            # Track coordinates for limits
-            x_coords.append(x)
-            y_coords.append(y)
-
-        # Set dynamic plot limits
-        ax.set_xlim(min(x_coords)-1, max(x_coords)+1)
-        ax.set_ylim(min(y_coords)-1, max(y_coords)+1)
-        
-        # Display the plot
+    st.write("## 🌟 Golden Spiral Visualization")
+    n_terms = st.slider("Number of terms:", 1, 15, 5)
+    
+    if st.button("Generate Spiral"):
+        fib_sequence = generate_golden_spiral(n_terms)
+        fig = plot_golden_spiral(fib_sequence)
         st.pyplot(fig)
         plt.close()
+        
+        # Bonus: Display Fibonacci sequence
+        st.write("**Fibonacci Sequence:**", fib_sequence)
          
 elif option == "Merge Sort":
     arr = st.text_input("Enter numbers separated by commas (e.g., 5, 3, 8, 1):")
