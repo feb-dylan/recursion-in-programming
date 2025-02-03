@@ -134,7 +134,7 @@ if option == "Factorial":
         ax.set_ylabel("Factorial Value")
         ax.set_title(f"Factorial Growth for {int(num)}")
         st.pyplot(fig)
-        plt.close()
+        plt.close()  # Close the figure to free memory
 
 elif option == "Power":
     base = st.number_input("Enter base:", step=1)
@@ -191,32 +191,32 @@ elif option == "Recursive Puzzle Challenge":
         st.info(recursive_puzzle(num))
 
 elif option == "Fibonacci Visualization":
-    num = st.number_input("Enter number of terms:", min_value=1, step=1)
+    num = st.number_input("Enter number of terms:", min_value=1, step=1, value=5)
     if st.button("Generate Fibonacci"):
         fib_sequence = fibonacci_spiral(int(num))
         
+        plot_placeholder = st.empty()
         fig, ax = plt.subplots()
-        ax.set_xlim(0, 20)
-        ax.set_ylim(0, 20)
+        ax.set_xlim(0, sum(fib_sequence) + 5)
+        ax.set_ylim(0, sum(fib_sequence) + 5)
         ax.set_aspect('equal', 'box')
         ax.axis('off')
 
-        # Animation function
-        def animate(i):
-            ax.clear()
-            ax.set_xlim(0, 20)
-            ax.set_ylim(0, 20)
-            ax.set_aspect('equal', 'box')
-            ax.axis('off')
-            fib_seq = fibonacci_spiral(i)
-            x, y = 0, 0
-            for j in range(len(fib_seq)):
-                ax.plot([x, x + fib_seq[j]], [y, y], color='blue')
-                x += fib_seq[j]
+        x, y = 0, 0
+        direction = 0
+        directions = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+        
+        for i, term in enumerate(fib_sequence):
+            dx, dy = directions[direction % 4]
+            ax.plot([x, x + dx * term], [y, y + dy * term], color='blue')
+            x += dx * term
+            y += dy * term
+            direction += 1
+            
+            # Update the plot incrementally
+            plot_placeholder.pyplot(fig)
+            time.sleep(0.5)  # Add a delay for animation effect
 
-        ani = animation.FuncAnimation(fig, animate, frames=range(1, len(fib_sequence) + 1), interval=1000, repeat=False)
-   
-        st.pyplot(fig)
         plt.close()
 
 elif option == "Merge Sort":
